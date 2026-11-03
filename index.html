@@ -174,7 +174,7 @@ aside#as{display:flex;flex-direction:column;background:var(--pn);border:1px soli
 .adv-t{display:flex;justify-content:space-between;align-items:center;width:100%;background:none;border:0;border-top:1px solid var(--bd);color:var(--tx);padding:12px 0 0;font:700 13px system-ui;cursor:pointer;margin-top:4px}.adv-t svg{width:16px;height:16px;transition:transform .25s;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.adv-t[aria-expanded=true] svg{transform:rotate(180deg)}
 #adv{display:flex;flex-direction:column;gap:4px}#adv small{color:var(--mt)}#bdp,#btm{margin:32px 12px 34px}
 .ib.busy svg{animation:pls .7s ease-in-out infinite alternate}@keyframes pls{to{opacity:.35;transform:scale(1.2)}}
-.sq.hn{box-shadow:inset 0 0 0 calc(var(--bs)/8*.06) rgba(56,189,248,.9)}
+.sq.hn::after{content:'';position:absolute;inset:0;background:rgba(56,189,248,.5);z-index:0;animation:hnin .35s ease-out}@keyframes hnin{from{opacity:0}to{opacity:1}}
 #ad{margin:30px 12px 32px}#er{margin:30px 12px 42px}#elo{padding:12px 12px 18px}.card{padding:12px 12px 18px}
 @media(min-width:1181px){#mv{min-height:92px}}
 </style><script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script><script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr@1.9.1/dist/pickr.min.js"></script><script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es5.min.js"></script></head><body data-v="play">
@@ -387,7 +387,7 @@ function bar(c){const o=cp(-c),m=cp(c),d=(m.v-o.v)/100;let av,nm,tg='',bt='';
  return`<div class="av ${bt}">${av}</div><b>${esc(nm)}</b>${tg}<div class="cps">${o.g}</div><em>${d>0?'+'+d:''}</em>${G.clk&&!G.names?`<span class="clk" data-c="${c}">${fmtClk(G.clk.rem[c==1?0:1])}</span>`:''}`}
 function render(){const fl=G.flip,tg=S.hint&&G.tg||[],ci=side==1?0:1,ck=G.view!=null||G.over&&!G.chk?-1:att(ks[ci],-side)?ks[ci]:-1;let H='';const ownOK=!G.names&&G.started&&!G.over&&!G.think&&side==G.human&&G.view==null,cuI=G.view!=null?G.view:G.sans.length,B2=G.view!=null?G.snaps[G.view].b:b,LS=G.view!=null?G.snaps[G.view].last:G.last;DB=B2;
  for(let i=0;i<64;i++){let r=i>>3,c=i&7;if(fl){r=7-r;c=7-c}const s=r*16+c,p=B2[s],lt=(r+c)%2==0;
-  H+=`<div class="sq ${lt?'l':'d'}${LS&&(LS[0]==s||LS[1]==s)?' lm':''}${s==G.sel?' sel':''}${s==ck?' ck':''}${s==pkT?' pt':''}${HL.has(s)?' hl':''}${HINT&&(s==HINT[0]||s==HINT[1])?' hn':''}${ownOK&&p*side>0?' own':''}" data-s="${s}">`+
+  H+=`<div class="sq ${lt?'l':'d'}${LS&&(LS[0]==s||LS[1]==s)?' lm':''}${s==G.sel?' sel':''}${s==ck?' ck':''}${s==pkT?' pt':''}${HL.has(s)?' hl':''}${HINT&&s==HINT[0]?' hn':''}${ownOK&&p*side>0?' own':''}" data-s="${s}">`+
   (p?`<img class="pc" src="${im(p)}" alt="" draggable="false">`:'')+(tg.includes(s)?`<u class="${p?'cap':''}"></u>`:'')+
   (LS&&s==LS[1]&&G.cls[cuI-1]?`<img class="cb" src="${ICN[G.cls[cuI-1]]}" alt="${G.cls[cuI-1]}">`:'')+(c==(fl?7:0)?`<span class="co rk">${8-r}</span>`:'')+(r==(fl?0:7)?`<span class="co fl">${FL[c]}</span>`:'')+'</div>'}
  $('bd').innerHTML=H;{const sh=G.over&&!G.rv;$('ov').style.display=sh?'grid':'none';if(sh&&!ovs){gsap.fromTo('#ov',{opacity:0},{opacity:1,duration:.3});gsap.fromTo('#ov>div',{scale:.8,y:14,opacity:0},{scale:1,y:0,opacity:1,duration:.45,ease:'back.out(1.7)',delay:.05})}ovs=sh}$('ovm').textContent=G.msg;$('bd').className=S.co?'':'nc';const bc=fl?-1:1;$('bb').innerHTML=bar(bc);$('tb').innerHTML=bar(-bc);
@@ -414,7 +414,7 @@ function render(){const fl=G.flip,tg=S.hint&&G.tg||[],ci=side==1?0:1,ck=G.view!=
   const w=I.s*-G.human,mt=Math.abs(w)>28000,tx=mt?(Math.abs(w)>=29000?(w>0?'1-0':'0-1'):(w>0?'M':'-M')+Math.ceil((29000-Math.abs(w))/2)):0;
   I.d?cnt('e_d',I.d):$('e_d').firstChild.nodeValue='Book';cnt('e_n',I.n,x=>x>9999?(x/1000|0)+'k':Math.round(x));cnt('e_t',I.t/1000,x=>x.toFixed(1)+'s');mt?$('e_e').firstChild.nodeValue=tx:cnt('e_e',w/100,x=>(x>0?'+':'')+x.toFixed(1))}}}
  drawAr();paintClk(G);{const inm=!!(G.started&&!G.over&&!G.names);document.body.classList.toggle('inm',inm);const gt=G.started?'New game':'Play';if($('go').textContent!=gt)$('go').textContent=gt;
-  $('undo').disabled=!G.started||!!G.think||!G.sans.length||!!G.clk;$('redo').disabled=!G.started||!!G.think||G.over||!(G.rdo&&G.rdo.length)||!!G.clk;$('hint').disabled=!G.started||!!G.over||!!G.think||side!=G.human||!!G.names;$('res').disabled=!G.started||!!G.over}
+  $('undo').disabled=!G.started||!!G.think||!G.sans.length||!!G.clk;$('redo').disabled=!G.started||!!G.think||G.over||!(G.rdo&&G.rdo.length)||!!G.clk;$('hint').disabled=!G.started||!!G.over||!!G.think||side!=G.human||!!G.names;{const ht=!HINT?'Hint: highlight the piece to move':HINT[2]==1?'Hint: show the move':'Hint: hide';if($('hint').title!=ht){$('hint').title=ht;$('hint').setAttribute('aria-label',ht)}}$('res').disabled=!G.started||!!G.over}
  if(G.isA)paintAn();{const t=G.arch?'Update archive entry':'Archive this game';if($('arcb').textContent!=t){$('arcb').textContent=t;$('oar').textContent=t}}$('azb').disabled=!G.over}
 let dr=null;const bd=$('bd');
 let rc=null,HL=new Set(),AR=[];
@@ -424,7 +424,7 @@ function drawAr(pv){const el=$('arw');if(!el)return;const P=s=>{const c=G.flip?7
   if(kn)pts.push(ax>ay?[B[0],A[1]]:[A[0],B[1]]);const L=pts[pts.length-1],ux=B[0]-L[0],uy=B[1]-L[1],ul=Math.hypot(ux,uy)||1,vx=ux/ul,vy=uy/ul,nx=pts.length>1?pts[1]:B,sx=nx[0]-A[0],sy=nx[1]-A[1],sl=Math.hypot(sx,sy)||1;
   const tip=[B[0]-vx*1.4,B[1]-vy*1.4],hl=4.6,hw=3.6,base=[tip[0]-vx*hl,tip[1]-vy*hl];pts[0]=[A[0]+sx/sl*3.4,A[1]+sy/sl*3.4];pts.push(base);
   return`<g opacity="${op}" fill="${col||'#ff9f1c'}" stroke="${col||'#ff9f1c'}"><polyline points="${pts.map(p=>p[0].toFixed(2)+','+p[1].toFixed(2)).join(' ')}" fill="none" stroke-width="2.3" stroke-linejoin="round"/><polygon stroke="none" points="${tip[0].toFixed(2)},${tip[1].toFixed(2)} ${(base[0]-vy*hw).toFixed(2)},${(base[1]+vx*hw).toFixed(2)} ${(base[0]+vy*hw).toFixed(2)},${(base[1]-vx*hw).toFixed(2)}"/></g>`};
- el.innerHTML=AR.map(a=>one(a[0],a[1],.85)).join('')+(pv?one(pv[0],pv[1],.5):'')+(HINT?one(HINT[0],HINT[1],.95,'#38bdf8'):'')}
+ el.innerHTML=AR.map(a=>one(a[0],a[1],.85)).join('')+(pv?one(pv[0],pv[1],.5):'')+(HINT&&HINT[2]>=2?one(HINT[0],HINT[1],.95,'#38bdf8'):'')}
 bd.oncontextmenu=e=>e.preventDefault();
 addEventListener('pointermove',e=>{if(!rc)return;const q=document.elementFromPoint(e.clientX,e.clientY),sq=q&&q.closest('.sq');rc.t=sq&&bd.contains(sq)?+sq.dataset.s:rc.s;drawAr(rc.t!=rc.s?[rc.s,rc.t]:null)});
 addEventListener('pointerup',e=>{if(!rc||e.button!=2)return;const r=rc;rc=null;const q=document.elementFromPoint(e.clientX,e.clientY),sq=q&&q.closest('.sq'),t=sq&&bd.contains(sq)?+sq.dataset.s:r.s;
@@ -644,8 +644,9 @@ function clkTick(){const g=G;if(!g||!g.clk||g.over||!g.started||BM!='play'||docu
  clkStep();const k=side==1?0:1;if(g.clk.rem[k]<=0){g.clk.rem[k]=0;flag(g,k)}else paintClk(g)}
 setInterval(clkTick,100);
 function hintGo(){const g=G;if(g.names||!g.started||g.over||g.think||side!=g.human||$('hint').classList.contains('busy'))return;
- const tok=g.ht=(g.ht||0)+1;HINT=null;drawAr();$('hint').classList.add('busy');
- HDONE=r=>{$('hint').classList.remove('busy');if(G!==g||g.ht!=tok||g.over||g.think||side!=g.human)return;const L=legal(),m=r&&r.m?L.find(x=>x==r.m):0;if(!m){toast('No hint available');return}HINT=[m&127,m>>7&127];toast('Hint: '+san(m,L));render()};
+ if(HINT){if(HINT[2]==1){HINT[2]=2;render();gsap.from('#arw g',{opacity:0,duration:.35})}else{HINT=null;render()}return}
+ const tok=g.ht=(g.ht||0)+1;$('hint').classList.add('busy');
+ HDONE=r=>{$('hint').classList.remove('busy');if(G!==g||g.ht!=tok||g.over||g.think||side!=g.human)return;const L=legal(),m=r&&r.m?L.find(x=>x==r.m):0;if(!m){toast('No hint available');return}HINT=[m&127,m>>7&127,1];toast('Hint: move the highlighted piece. Click the bulb again to see where.');render()};
  if(wkOK){try{if(!wh){wh=newW();wh.onmessage=e=>{if(HDONE&&String(e.data.id||'').startsWith('h:'))HDONE(e.data)};wh.onerror=()=>{wh=null;wkOK=0;setTimeout(()=>HDONE&&HDONE(ana(700,6)),30)}}wh.postMessage(posM({an:1,ms:1600,dm:9,id:'h:'+tok},g));return}catch(e){wh=null}}
  setTimeout(()=>HDONE&&HDONE(ana(700,6)),40)}
 $('hint').onclick=hintGo;
